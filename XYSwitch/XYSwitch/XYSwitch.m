@@ -212,26 +212,25 @@
 - (void)changeState {
     
     __weak XYSwitch * weakSelf = self;
+    self.isOn = !self.isOn;
+    
+    //block非空判断,不写会崩溃
+    if (self.changeStateBlock) {
+        self.changeStateBlock(self.isOn);
+    } else {
+        NSLog(@"self.changeStateBlock() is nil");
+    }
+    
     if (self.isOn) {
-        //非空判断,否则引起崩溃
-        if (self.changeStateBlock) {
-            self.changeStateBlock(self.isOn);
-        }
-        [UIView animateWithDuration:0 animations:^{
-            [weakSelf stateOff];
-        }];
-
-    }else{
-        //非空判断
-        if (self.changeStateBlock) {
-            self.changeStateBlock(self.isOn);
-        }
         [UIView animateWithDuration:0 animations:^{
             [weakSelf stateOn];
         }];
-        
+    }else{
+        [UIView animateWithDuration:0 animations:^{
+            [weakSelf stateOff];
+        }];
     }
-    self.isOn = !self.isOn;
+    
     NSLog(@"SwitchisOn:%d",self.isOn);
     
 }
