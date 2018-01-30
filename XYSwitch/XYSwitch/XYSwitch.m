@@ -221,6 +221,7 @@
         NSLog(@"self.changeStateBlock() is nil");
     }
     
+    //UIView动画改变UI布局
     if (self.isOn) {
         [UIView animateWithDuration:0 animations:^{
             [weakSelf stateOn];
