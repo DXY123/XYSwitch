@@ -209,7 +209,7 @@
 
 
 //改变开关状态
-- (void)change {
+- (void)changeState {
     
     __weak XYSwitch * weakSelf = self;
     if (self.isOn) {
@@ -263,7 +263,7 @@
 
 - (UITapGestureRecognizer *)tapGes{
     if (!_tapGes){
-        _tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(change)];
+        _tapGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(changeState)];
     }
     return _tapGes;
 }
