@@ -8,11 +8,8 @@
 
 #import "ViewController.h"
 #import "XYSwitch.h"
-#import "Masonry.h"
 
 @interface ViewController ()
-
-
 
 @end
 
@@ -22,24 +19,17 @@
     [super viewDidLoad];
     
     
-    XYSwitch * mySwitch = [[XYSwitch alloc] init];
+    XYSwitch * mySwitch = [[XYSwitch alloc] initWithTextFont:[UIFont systemFontOfSize:13] OnText:@"bang" offText:@"biu" onBackGroundColor:nil offBackGroundColor:nil onButtonColor:nil offButtonColor:nil onTextColor:nil andOffTextColor:nil];
     [self.view addSubview:mySwitch];
     
     
-    [mySwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.offset(100);
-        make.left.offset(20);
-        make.width.mas_equalTo(38);
-        make.height.mas_equalTo(19);
-    }];
-    
+    mySwitch.frame = CGRectMake(100, 100, 80, 40);
     
     mySwitch.changeStateBlock = ^(BOOL isOn) {
         NSLog(@"Controller:%zd",isOn);
     };
     
 }
-
 
 
 - (void)didReceiveMemoryWarning {

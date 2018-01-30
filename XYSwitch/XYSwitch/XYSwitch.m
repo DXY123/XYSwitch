@@ -12,45 +12,125 @@
 @interface XYSwitch ()
 
 
-@property(nonatomic,strong) UIView * btn;
+@property(nonatomic,strong) UIView * btnView;
 
-@property(nonatomic,strong) UILabel * content;
+@property(nonatomic,strong) UILabel * contentLabel;
 
 @property(nonatomic,strong) UITapGestureRecognizer * tapGes;
 
 @property(nonatomic,assign) BOOL isOn;
 
 
+//数据
+
+@property(nonatomic,strong) UIFont * textFont;
+
+@property(nonatomic,copy) NSString * onText;
+@property(nonatomic,copy) NSString * offText;
+
+@property(nonatomic,strong) UIColor * bgOnColor;
+@property(nonatomic,strong) UIColor * bgOffColor;
+
+@property(nonatomic,strong) UIColor * btnOnColor;
+@property(nonatomic,strong) UIColor * btnOffColor;
+
+@property(nonatomic,strong) UIColor * textOnColor;
+@property(nonatomic,strong) UIColor * textOffColor;
+
 @end
 
 
 @implementation XYSwitch
 
-- (instancetype)init
+- (instancetype)initWithTextFont:(UIFont *)textFont OnText:(NSString *)onText offText:(NSString *)offText onBackGroundColor:(UIColor *)bgOnColor offBackGroundColor:(UIColor *)bgOffColor onButtonColor:(UIColor *)btnOnColor offButtonColor:(UIColor *)btnOffColor onTextColor:(UIColor *)textOnColor andOffTextColor:(UIColor *)textOffColor
 {
     self = [super init];
     if (self) {
         self.isOn = NO;
-        self.backgroundColor = [UIColor lightGrayColor];
-        self.btn.backgroundColor = [UIColor whiteColor];
+        
+        if (onText) {
+            self.onText = onText;
+        } else {
+            //缺省值
+            self.onText = @"文字";
+        }
+        
+        if (offText) {
+            self.offText = offText;
+        } else {
+            //缺省值
+            self.offText = @"文字";
+        }
+        
+        if (bgOnColor) {
+            self.bgOnColor = bgOnColor;
+        } else {
+            //缺省值
+            self.bgOnColor = [UIColor redColor];
+        }
+        
+        if (bgOffColor) {
+            self.bgOffColor = bgOffColor;
+        } else {
+            //缺省值
+            self.bgOffColor = [UIColor lightGrayColor];
+        }
+        
+        if (btnOnColor) {
+            self.btnOnColor = btnOnColor;
+        } else {
+            //缺省值
+            self.btnOnColor = [UIColor whiteColor];
+        }
+        
+        if (btnOffColor) {
+            self.btnOffColor = btnOffColor;
+        } else {
+            //缺省值
+            self.btnOffColor = [UIColor whiteColor];
+        }
+        
+        if (textOnColor) {
+            self.textOnColor = textOnColor;
+        } else {
+            //缺省值
+            self.textOnColor = [UIColor redColor];
+        }
+        
+        if (textOffColor) {
+            self.textOffColor = textOffColor;
+        } else {
+            //缺省值
+            self.textOffColor = [UIColor lightGrayColor];
+        }
+        
+        if (textFont) {
+            self.textFont = textFont;
+        } else {
+            //缺省值
+            self.textFont = [UIFont systemFontOfSize:9];
+        }
+        
+        
+        [self prepareUI];
+        
+        [self stateOff];
     }
     return self;
 }
 
 
 - (void)layoutSubviews {
-    [self prepareUI];
+    [self frameSetup];
 }
+
+
 
 - (void)prepareUI {
     
-    self.layer.cornerRadius = self.frame.size.height * 0.5;
-    self.layer.masksToBounds = YES;
+    [self addSubview:self.btnView];
     
-    
-    [self addSubview:self.btn];
-    
-    [self.btn addSubview:self.content];
+    [self.btnView addSubview:self.contentLabel];
     
     [self frameSetup];
     
@@ -61,66 +141,69 @@
 
 - (void)frameSetup {
     
-    
-    
-    self.backgroundColor = [UIColor lightGrayColor];
     CGFloat x,y,w,h;
     
     x = 2;
     y = 2;
     w = self.frame.size.height - 2 * 2;
     h = self.frame.size.height - 2 * 2;
-    self.btn.frame = CGRectMake(x, y, w, h);
+    self.btnView.frame = CGRectMake(x, y, w, h);
     
-    self.btn.layer.cornerRadius = w / 2;
-    self.btn.layer.masksToBounds = YES;
+    self.btnView.layer.cornerRadius = w / 2;
+    self.btnView.layer.masksToBounds = YES;
     
     x = 0;
     y = 0;
-    self.content.frame = CGRectMake(x, y, w, h);
+    self.contentLabel.frame = CGRectMake(x, y, w, h);
+    
+    self.layer.cornerRadius = self.frame.size.height * 0.5;
+    self.layer.masksToBounds = YES;
     
 }
 
 
 //关闭状态的UI
 - (void)stateOff {
-    self.backgroundColor = [UIColor colorWithRed:225./255. green:223./255. blue:223./255. alpha:1];
     
-    self.content.textColor = [UIColor colorWithRed:225./255. green:223./255. blue:223./255. alpha:1];
+    self.backgroundColor = self.bgOffColor;
+    
+    self.btnView.backgroundColor = self.btnOffColor;
+    
+    self.contentLabel.textColor = self.textOffColor;
+    
+    self.contentLabel.text = self.offText;
     
 
-    
-    
     CGFloat x,y,w,h;
     
     x = 2;
     y = 2;
     w = self.frame.size.height - 2 * 2;
     h = self.frame.size.height - 2 * 2;
-    self.btn.frame = CGRectMake(x, y, w, h);
-    
-    
+    self.btnView.frame = CGRectMake(x, y, w, h);
     
 }
 
 
 //打开状态的UI
 - (void)stateOn {
-    self.backgroundColor = [UIColor redColor];
     
-    self.content.textColor = [UIColor redColor];
+    self.backgroundColor = self.bgOnColor;
+    
+    self.btnView.backgroundColor = self.btnOnColor;
+    
+    self.contentLabel.textColor = self.textOnColor;
+    
+    self.contentLabel.text = self.onText;
     
     
     CGFloat x,y,w,h;
     
-    
-    x = self.frame.size.width - self.btn.frame.size.width - 2;
+    x = self.frame.size.width - self.btnView.frame.size.width - 2;
     y = 2;
     w = self.frame.size.height - 2 * 2;
     h = self.frame.size.height - 2 * 2;
-    self.btn.frame = CGRectMake(x, y, w, h);
-    
-    
+    self.btnView.frame = CGRectMake(x, y, w, h);
     
 }
 
@@ -130,29 +213,26 @@
     
     __weak XYSwitch * weakSelf = self;
     if (self.isOn) {
-        //这里的非空判断自行完善,否则可能引起崩溃
-        self.isOn = NO;
-
-        self.changeStateBlock(self.isOn);
+        //非空判断,否则引起崩溃
+        if (self.changeStateBlock) {
+            self.changeStateBlock(self.isOn);
+        }
         [UIView animateWithDuration:0 animations:^{
             [weakSelf stateOff];
         }];
 
-        
-        
     }else{
-        
-        self.isOn = YES;
-        
-        self.changeStateBlock(self.isOn);
+        //非空判断
+        if (self.changeStateBlock) {
+            self.changeStateBlock(self.isOn);
+        }
         [UIView animateWithDuration:0 animations:^{
             [weakSelf stateOn];
         }];
-
         
     }
+    self.isOn = !self.isOn;
     NSLog(@"SwitchisOn:%d",self.isOn);
-    
     
 }
 
@@ -160,25 +240,24 @@
 
 #pragma mark - 懒加载
 
-- (UILabel *)content{
-    if (!_content){
-        _content = [[UILabel alloc] init];
-        _content.text = @"字";
-        _content.font = [UIFont systemFontOfSize:9];
-        _content.textColor = [UIColor colorWithRed:225./255. green:223./255. blue:223./255. alpha:1];
-        _content.textAlignment = NSTextAlignmentCenter;
-        [_content sizeToFit];
+- (UILabel *)contentLabel{
+    if (!_contentLabel){
+        _contentLabel = [[UILabel alloc] init];
+        _contentLabel.text = @"文字";
+        _contentLabel.font = _textFont;
+        _contentLabel.textColor = [UIColor colorWithRed:225./255. green:223./255. blue:223./255. alpha:1];
+        _contentLabel.textAlignment = NSTextAlignmentCenter;
+        [_contentLabel sizeToFit];
     }
-    return _content;
+    return _contentLabel;
 }
 
-- (UIView *)btn{
-    if (!_btn){
-        _btn = [[UIView alloc] init];
-        
+- (UIView *)btnView{
+    if (!_btnView){
+        _btnView = [[UIView alloc] init];
     }
     
-    return _btn;
+    return _btnView;
 }
 
 
